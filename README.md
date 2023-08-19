@@ -123,12 +123,12 @@ Debugging using spike:
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/f2d07be9-0b4b-470c-9af0-964817e7cb13)
 
 ### <a name="rv-d1sk3---integer-number-representation"></a> RV-D1SK3 - Integer number representation ###
-Some data representation terms we use:
-_Byte_ - A byte is a fundamental unit of digital information that consists of a group of eight bits. 
-_Word_ - A word is a basic unit of data that a processor can operate on in a single instruction. It typically corresponds to the natural data width of the processor's architecture. In RISC-V Word is of length 32bits.
-_Double Word_ - In computer architecture and data representation, a "double word" is a term used to describe a unit of data that is twice the size of a "word." In RISC-V Double word is of length 64bits.
-_Most Significant bit(MSB)_ - MSB stands for "Most Significant Bit." It is a term used in digital systems and binary representation to refer to the bit in a binary number that holds the highest positional value. 
-_Least Significant bit(LSB)_ - LSB stands for "Least Significant Bit." It is the term used in binary representation to refer to the bit in a binary number that holds the lowest positional value. In other words, the Least Significant Bit is the rightmost bit in a binary representation.
+Some data representation terms we use:   
+_Byte_ - A byte is a fundamental unit of digital information that consists of a group of eight bits.   
+_Word_ - A word is a basic unit of data that a processor can operate on in a single instruction. It typically corresponds to the natural data width of the processor's architecture. In RISC-V Word is of length 32bits.  
+_Double Word_ - In computer architecture and data representation, a "double word" is a term used to describe a unit of data that is twice the size of a "word." In RISC-V Double word is of length 64bits.  
+_Most Significant bit(MSB)_ - MSB stands for "Most Significant Bit." It is a term used in digital systems and binary representation to refer to the bit in a binary number that holds the highest positional value.   
+_Least Significant bit(LSB)_ - LSB stands for "Least Significant Bit." It is the term used in binary representation to refer to the bit in a binary number that holds the lowest positional value. In other words, the Least Significant Bit is the rightmost bit in a binary representation.  
 
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/c30bdb1a-b5e9-457e-b48c-ecc4661aca33)
 
@@ -154,11 +154,68 @@ _Negative number MSB=1_
 The maximum and minimum signed value it can hold is:
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/bfa15254-17a8-4bd0-bad0-3e67aae7639e)
 
-Instructions that operate on these kind of numbers(in the below figure) they are called as **Base INteger Instructions  RV64I**
+Instructions that operate on these kind of numbers(in the below figure) they are called as **Base Integer Instructions  RV64I**
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/a23a7f3f-8ed2-43b0-a928-b9d2cea84619)
 
+C program for Unsigned_highest number in RISC-V 64bit:
 
+	#include <stdio.h>
+	#include <math.h>
+	int main() {
+	unsigned long long int max = (unsigned long long int) (pow(2,64) -1);
+	printf("highest number represented by unsigned long long int is %llu\n", max);
+	return 0;
+ 	}
 
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/38563554-7f14-4453-bec1-244805715555)
 
+Modifying the above program to check whether the result we got is the highest number are not:
+
+ 	#include <stdio.h>
+	#include <math.h>
+	int main() {
+	unsigned long long int max = (unsigned long long int) (pow(2,100) -1); 
+ 	unsigned long long int max = (unsigned long long int) (pow(2,10) -1); 
+ 	unsigned long long int max = (unsigned long long int) (pow(2,10) * -1); 
+	printf("highest number represented by unsigned long long int is %llu\n", max);
+	return 0;
+ 	}
+  	//%llu is the format specifier for unsigned integer
+
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/4dc1ece2-0d39-4bdf-a57b-738fbedb0de2)
+
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/bda93760-3f7f-4852-becc-22ff48bd71ac)
+
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/523e764f-112a-45ba-8e9a-ead116162029)
+For double word the lowest unsigned number is zero.    
+To get the negative number   
+
+  	#include <stdio.h>
+	#include <math.h>
+	int main() {
+	long long int max = (int) (pow(2,63) -1);
+	long long int min = (int) (pow(2,63) * -1);
+	printf("highest number represented by long long int is %lld\n", max);
+	printf("lowest number represented by long long int is %lld\n", min);
+	return 0;
+	 }
+ 	// %lld is the format specifier for signed integer
+
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/3eb52f7b-2959-4b30-b8ea-00cb861127d2)
+We do get the output for negative numbers but it is not the right one.  
+
+The  bug over here is instead of 'int' we have to change it into "long long int"
+
+ 	#include <stdio.h>
+	#include <math.h>
+	int main() {
+	long long int max = (long long int) (pow(2,63) -1);
+	long long int min = (long long int) (pow(2,63) * -1);
+	printf("highest number represented by long long int is %lld\n", max);
+	printf("lowest number represented by long long int is %lld\n", min);
+	return 0;
+ 	}
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/eb81d9e6-5ad6-448b-aeb3-9e3301433f7e)
 
   
+ 	// %lld is the format specifier for signed integer
