@@ -115,6 +115,15 @@ Just as above we need to get the output using RISC-V compiler and the command is
 
 ![Screenshot from 2023-08-19 20-12-30](https://github.com/V-Pranathi/RISC-V/assets/140998763/53e87409-20b9-4dc1-b5fe-3b93ef646f81)
 
+Debugging using spike:
+
+	until pc 0 100b0 // runs until oc counter is 100b0
+ 	reg 0 a2 // contents of a2
+  
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/f2d07be9-0b4b-470c-9af0-964817e7cb13)
+
+### <a name="rv-d1sk3---integer-number-representation"></a> RV-D1SK3 - Integer number representation ###
+
 
 
 
