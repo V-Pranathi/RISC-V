@@ -187,6 +187,7 @@ Modifying the above program to check whether the result we got is the highest nu
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/bda93760-3f7f-4852-becc-22ff48bd71ac)
 
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/523e764f-112a-45ba-8e9a-ead116162029)
+
 For double word the lowest unsigned number is zero.    
 To get the negative number   
 
@@ -202,6 +203,7 @@ To get the negative number
  	// %lld is the format specifier for signed integer
 
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/3eb52f7b-2959-4b30-b8ea-00cb861127d2)
+
 We do get the output for negative numbers but it is not the right one.  
 
 The  bug over here is instead of 'int' we have to change it into "long long int"
@@ -215,7 +217,6 @@ The  bug over here is instead of 'int' we have to change it into "long long int"
 	printf("lowest number represented by long long int is %lld\n", min);
 	return 0;
  	}
-![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/eb81d9e6-5ad6-448b-aeb3-9e3301433f7e)
+ 
+ ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/eb81d9e6-5ad6-448b-aeb3-9e3301433f7e)
 
-  
- 	// %lld is the format specifier for signed integer
