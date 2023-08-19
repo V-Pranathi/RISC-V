@@ -2,8 +2,8 @@
 ## Table of Contents  
 * [1. RV DAY 1 Introduction to RISC-V ISA and GNU compiler toolchain](#1--rv-day-1-introduction-to-risc-v-isa-and-gnu-compiler-toolchain)
   * [RV-D1SK1 - Introduction to RISC-V basic keywords](#rv-d1sk1---introduction-to-risc-v-basic-keywords)
-  * RV-D1SK2 - Labwork for RISC-V software toolchain
-  * RV-D1SK3 - Integer number representation
+  * [RV-D1SK2 - Labwork for RISC-V software toolchain](#rv-d1sk2---labwork-for-risc-v-software-toolchain)
+  * [RV-D1SK3 - Integer number representation](#rv-d1sk3---integer-number-representation)
 * [2. RV Day 2 - Introduction to ABI and basic verification flow](#2--rv-day-2-introduction-to-abi-and-basic-verification-flow)
   * RV-D2SK1 - Application Binary interface (ABI)
   * RV-D2SK2 - Lab work using ABI function calls
@@ -58,7 +58,7 @@ In the above image we can see various instructions. In this workshop we will foc
 * Application Binray Interface(ABI) -- for keywords like a0,sp,ra,.. programmers  access these registers caues of this interface.
 * Memory allocation and stack pointer -- data transfer happening concept called memory allocation  and stack pointer.
 
-### <a name="RV-D1SK2 - Labwork for RISC-V software toolchain"></a> RV-D1SK2 - Labwork for RISC-V software toolchain ###
+### <a name="rv-d1sk2---labwork-for-risc-v-software-toolchain"></a> RV-D1SK2 - Labwork for RISC-V software toolchain ###
 
 **GCC compile And Disassemble**
 
@@ -101,7 +101,7 @@ The output of the compiler is:
 
 ![Screenshot from 2023-08-19 20-04-35](https://github.com/V-Pranathi/RISC-V/assets/140998763/87cfee5a-a5bd-47ab-9489-07d761a42b6c)
 
-**Spike Simulation and debug**
+**Spike Simulation and debug**  
 Simulation using gcc
 
       gcc sum.c
@@ -123,12 +123,39 @@ Debugging using spike:
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/f2d07be9-0b4b-470c-9af0-964817e7cb13)
 
 ### <a name="rv-d1sk3---integer-number-representation"></a> RV-D1SK3 - Integer number representation ###
+Some data representation terms we use:
+_Byte_ - A byte is a fundamental unit of digital information that consists of a group of eight bits. 
+_Word_ - A word is a basic unit of data that a processor can operate on in a single instruction. It typically corresponds to the natural data width of the processor's architecture. In RISC-V Word is of length 32bits.
+_Double Word_ - In computer architecture and data representation, a "double word" is a term used to describe a unit of data that is twice the size of a "word." In RISC-V Double word is of length 64bits.
+_Most Significant bit(MSB)_ - MSB stands for "Most Significant Bit." It is a term used in digital systems and binary representation to refer to the bit in a binary number that holds the highest positional value. 
+_Least Significant bit(LSB)_ - LSB stands for "Least Significant Bit." It is the term used in binary representation to refer to the bit in a binary number that holds the lowest positional value. In other words, the Least Significant Bit is the rightmost bit in a binary representation.
 
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/c30bdb1a-b5e9-457e-b48c-ecc4661aca33)
 
+The total number of represented by RISC-V64 is:
+![Screenshot from 2023-08-19 22-12-13](https://github.com/V-Pranathi/RISC-V/assets/140998763/8e128a4d-3495-4eb3-b80b-efedb951edd5)
 
+The maximum and minimum unsigned value it holds is:
+![Screenshot from 2023-08-19 22-12-55](https://github.com/V-Pranathi/RISC-V/assets/140998763/120f561d-dcdc-4064-b207-3a805ee988bf)
 
+* When we add two numbers and the sum exceeds the maximum value that it can take, what we should do? For that we have the overflow flag which we will study later.  
+* What if I subtract two numbers and resultant is negative? How can we deal with unsigned numbers? Usage of 2,s complement solves the problem.  
 
+**2's complement** The two's complement is a mathematical technique used in computing to represent signed integers (positive and negative whole numbers) using the binary number system.
 
+To convert a negative integer to its two's complement representation:  
+
+1. Take the positive binary representation.  
+2. Flip all the bits (change 0s to 1s and 1s to 0s).  
+3. Add 1 to the resulting value.   
+_Positive number MSB=0_
+_Negative number MSB=1_
+
+The maximum and minimum signed value it can hold is:
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/bfa15254-17a8-4bd0-bad0-3e67aae7639e)
+
+Instructions that operate on these kind of numbers(in the below figure) they are called as **Base INteger Instructions  RV64I**
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/a23a7f3f-8ed2-43b0-a928-b9d2cea84619)
 
 
 
