@@ -22,4 +22,5 @@
   * RV-D5SK1 - Pipelining the CPU
   * RV-D5SK2 - Solutions to Pipeline Hazards
   * RV-D5SK3 - Load/Store Instructions and Completing RISC-V CPU
-## <a name="1. RV DAY 1 Introduction to RISC-V ISA and GNU compiler toolchain"></a> 1--rv-day-1-introduction-to-risc-v-isa-and-gnu-compiler-toolchain ##
+## <a name="1--rv-day-1-introduction-to-risc-v-isa-and-gnu-compiler-toolchain"></a> 1. RV DAY 1 Introduction to RISC-V ISA and GNU compiler toolchain ##
+
