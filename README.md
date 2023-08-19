@@ -1,7 +1,7 @@
 # RISC-V
 ## Table of Contents  
 * [1. RV DAY 1 Introduction to RISC-V ISA and GNU compiler toolchain](#1--rv-day-1-introduction-to-risc-v-isa-and-gnu-compiler-toolchain)
-  * RV-D1SK1 - Introduction to RISC-V basic keywords
+  * [RV-D1SK1 - Introduction to RISC-V basic keywords](#rv-d1sk1---introduction-to-risc-v-basic-keywords)
   * RV-D1SK2 - Labwork for RISC-V software toolchain
   * RV-D1SK3 - Integer number representation
 * [2. RV Day 2 - Introduction to ABI and basic verification flow](#2--rv-day-2-introduction-to-abi-and-basic-verification-flow)
@@ -22,7 +22,8 @@
   * RV-D5SK1 - Pipelining the CPU
   * RV-D5SK2 - Solutions to Pipeline Hazards
   * RV-D5SK3 - Load/Store Instructions and Completing RISC-V CPU
-## <a name="1--rv-day-1-introduction-to-risc-v-isa-and-gnu-compiler-toolchain"></a> 1. RV DAY 1 Introduction to RISC-V ISA and GNU compiler toolchain ##
+## <a name="1--rv-day-1-introduction-to-risc-v-isa-and-gnu-compiler-toolchain"></a> 1. RV DAY 1 Introduction to RISC-V ISA and GNU compiler toolchain ##  
+### <a name="rv-d1sk1---introduction-to-risc-v-basic-keywords"></a> RV-D1SK1 - Introduction to RISC-V basic keywords ###
 **RISC-V** - RISC-V is an open-source instruction set architecture (ISA) that is designed to be simple, modular, and extensible. It stands for "Reduced Instruction Set Computing - Five" and is intended to be used for a wide range of applications, from embedded systems to high-performance computing. Unlike many other ISAs, RISC-V is not owned by any single company or organization, which has contributed to its popularity and adoption.  
 
 **ISA** - In the context of computer architecture, "ISA" stands for "Instruction Set Architecture." It refers to the set of instructions that a computer processor can execute, along with the associated encoding, addressing modes, registers, memory organization, and other architectural features. INstructions as  abstract interface between hugh level language and hardware. This abstract interface is nothing but ISA/ Architecture of computer.  
@@ -56,6 +57,64 @@ In the above image we can see various instructions. In this workshop we will foc
 * Single and Double precision floating point extenstion RV64F & RV64D -- flw,fadd.s,....
 * Application Binray Interface(ABI) -- for keywords like a0,sp,ra,.. programmers  access these registers caues of this interface.
 * Memory allocation and stack pointer -- data transfer happening concept called memory allocation  and stack pointer.
+
+### <a name="RV-D1SK2 - Labwork for RISC-V software toolchain"></a> RV-D1SK2 - Labwork for RISC-V software toolchain ###
+
+**GCC compile And Disassemble**
+
+Compiling a C program --> Sum_1ton.c 
+
+    #include<stdio.h>
+     int main(){
+	    int i,sum=0,n=5;
+	    for(i=0;i<=n;i++){
+	    sum +=i;
+	    }
+     printf("sum from 1 to %d is: %d\n",n,sum);
+     return 0;
+     }
+
+The commands used to compile are given below:
+
+     // gcc compile
+     $ riscv64-unknown-elf-gcc -O1 -mabi=lp64 -march=rv64i -o sum.o sum.c
+     // disassemble
+     $ riscv64-unknown-elf-objdump -d sum.o | less
+
+The output of the compiler is:  
+
+     // helps to see the main file 
+     /main
+     n
+
+![Screenshot from 2023-08-19 19-48-23](https://github.com/V-Pranathi/RISC-V/assets/140998763/d51200fc-9c88-4242-84e7-30304fcbffbe)
+The number of instructions used are: 101b0-10184= 2C ==> 2C/4 = B which means 11 instructions.   
+
+Let us run the same code with slight change in the commands:
+
+     // gcc compile
+     $ riscv64-unknown-elf-gcc -Ofast -mabi=lp64 -march=rv64i -o sum.o sum.c
+     // disassemble
+     $ riscv64-unknown-elf-objdump -d sum.o | less
+
+The output of the compiler is:
+
+![Screenshot from 2023-08-19 20-04-35](https://github.com/V-Pranathi/RISC-V/assets/140998763/87cfee5a-a5bd-47ab-9489-07d761a42b6c)
+
+**Spike Simulation and debug**
+Simulation using gcc
+
+      gcc sum.c
+      ./a/out
+      
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/bfd66461-9b7b-470b-950a-3cee8d46de90)
+
+Just as above we need to get the output using RISC-V compiler and the command is as follows:
+
+     spike -d pk sum.o
+
+![Screenshot from 2023-08-19 20-12-30](https://github.com/V-Pranathi/RISC-V/assets/140998763/53e87409-20b9-4dc1-b5fe-3b93ef646f81)
+
 
 
 
