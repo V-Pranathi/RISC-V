@@ -7,7 +7,7 @@
 * [2. RV Day 2 - Introduction to ABI and basic verification flow](#2--rv-day-2-introduction-to-abi-and-basic-verification-flow)
   * [RV-D2SK1 - Application Binary interface (ABI)](#rv-d2sk1---application-binary-interface-(abi))
   * [RV-D2SK2 - Lab work using ABI function calls](#rv-d2sk2---lab-work-using-abi-function-calls)
-  * RV-D2SK3 - Basic verification flow using iverilog
+  * [RV-D2SK3 - Basic verification flow using iverilog](#rv-d2sk3---basic-verification-flow-using-iverilog)
 * [3. RV Day 3 - Digital Logic with TL-Verilog and Makerchip](#3--rv-day-3---digital-logic-with-tl-verilog-and-makerchip)
   * RV-D3SK1 - Combinational logic in TL-Verilog using Makerchip
   * RV-D3SK2 - Sequential logic
@@ -329,6 +329,7 @@ _Object dump_:
 **Lab to run C-program on RISC-V CPU** The flow is shown below
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/af19b2a3-3d8d-4d8f-aa91-95b27b8976b4)
 
+### <a name="rv-d2sk3---basic-verification-flow-using-iverilog"></a> RV-D2SK3 - Basic verification flow using iverilog ###
 There is this rv32im.sh file which is the script file which contain scripts that are needed to convert into hex file which is firmware.hex and load it into picor32.v memory using testbench.v and simulate it at the end.
 
 rv32im.sh file contains
