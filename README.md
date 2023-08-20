@@ -372,8 +372,17 @@ In contrast to the traditional gate-level Verilog, which focuses on describing t
 This is how makerchip platform looks like(below is the example of pythagorean)
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/2542e664-d829-4fcc-a6d5-a04478cdc929)
 
+**(A) Inverter example on makerchip** 
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/31d2a237-099a-4c7b-bce1-88144fde705f)
 
+**(B) OR gate example on makerchip**
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/d2582d1d-99a9-4a01-934c-171ebbe4d1d1)
 
+**(C) Vectors example on makerchip**
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/82787089-1f99-4c1b-a5a0-a488bcdda3d7)
 
+**(D) 1 bit Multiplexer example on makerchip**
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/8dc0b851-29b1-4cc3-9014-a0e4647d3c3d)
 
+**(D) Multiplexer example on makerchip**
 
