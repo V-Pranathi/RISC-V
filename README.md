@@ -373,18 +373,23 @@ This is how makerchip platform looks like(below is the example of pythagorean)
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/2542e664-d829-4fcc-a6d5-a04478cdc929)
 
 **(A) Inverter on makerchip** 
+
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/31d2a237-099a-4c7b-bce1-88144fde705f)
 
 **(B) OR gate on makerchip**
+
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/d2582d1d-99a9-4a01-934c-171ebbe4d1d1)
 
 **(C) Vectors on makerchip**
+
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/82787089-1f99-4c1b-a5a0-a488bcdda3d7)
 
 **(D) 1 bit Multiplexer on makerchip**
+
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/8dc0b851-29b1-4cc3-9014-a0e4647d3c3d)
 
 **(E) Multiplexer on makerchip**
+
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/c096e8ee-de40-4fdc-82d9-4cfbd212e91e)
 
 **(F) Calculator on makerchip**
@@ -411,6 +416,7 @@ This is how makerchip platform looks like(below is the example of pythagorean)
 ### <a name="rv-d3sk2---sequential-logic"></a> RV-D3SK2 - Sequential logic ###
 
 **(A) Fibonacci sequence on makerchip**
+
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/4775a2d8-057e-48de-b962-d87823077b21)
 
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/60d65a7a-2222-4526-9dea-dbaf4446ff47)
