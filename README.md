@@ -384,5 +384,9 @@ This is how makerchip platform looks like(below is the example of pythagorean)
 **(D) 1 bit Multiplexer example on makerchip**
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/8dc0b851-29b1-4cc3-9014-a0e4647d3c3d)
 
-**(D) Multiplexer example on makerchip**
+**(E) Multiplexer example on makerchip**
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/c096e8ee-de40-4fdc-82d9-4cfbd212e91e)
+
+**(F) Calculator on makerchip**
+
 
