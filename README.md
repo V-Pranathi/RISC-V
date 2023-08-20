@@ -365,6 +365,13 @@ Logic gates are fundamental building blocks of digital circuits and are used to 
 There are several types of basic logic gates, each performing a specific logical operation:  
 ![Screenshot from 2023-08-20 17-40-35](https://github.com/V-Pranathi/RISC-V/assets/140998763/ce5959f9-92bc-427a-981c-b6eaaa13bf79)
 
+**TL-verilog** which is Transactional - Level verilog is a higher-level abstraction of hardware description language (HDL) used for modeling and designing digital systems at a higher level of abstraction. It's often used to describe the behavior of a system without delving into the low-level implementation details. This level of abstraction is particularly useful for system-level design and simulation.  
+In contrast to the traditional gate-level Verilog, which focuses on describing the circuit interconnections and physical gates, transactional-level Verilog allows designers to describe the operation of the system using more abstract constructs.  
+
+**Makerchip** Makerchip is an online platform and integrated development environment (IDE) that allows users to design, simulate, and implement digital systems using hardware description languages (HDLs) like TL-verilog, Verilog and VHDL. It provides a user-friendly environment for creating and testing digital designs, making it especially useful for learning, teaching, and prototyping digital circuits and systems.  
+This is how makerchip platform looks like(below is the example of pythagorean)
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/2542e664-d829-4fcc-a6d5-a04478cdc929)
+
 
 
 
