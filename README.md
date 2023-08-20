@@ -672,11 +672,45 @@ Validity provides:
 
 **5. Register File:** The register file is a storage component that holds the processor's general-purpose registers. These registers are used for temporary storage of data during instruction execution. In RISC-V, the register file contains a fixed number of registers (e.g., 32 registers in a standard RISC-V implementation).
 
-**6. Data Memory:** The data memory (often referred to as the "data cache") is used for reading from and writing to data values in memory. It holds the data used in memory load and store operations. Data memory access can be more time-consuming than register access due to the latency associated with memory hierarchy, caches, and main memory.
+**6. Data Memory:** The data memory (often referred to as the "data cache") is used for reading from and writing to data values in memory. It holds the data used in memory load and store operations. Data memory access can be more time-consuming than register access due to the latency associated with memory hierarchy, caches, and main memory.  
 
-**7. Control Unit:** The control unit generates and coordinates control signals for various parts of the processor to ensure correct execution of instructions. It manages the flow of data between different stages of the pipeline, controls register operations, memory accesses, ALU operations, and branching decisions.
+**(A) PC increment**  
 
-**8. Pipeline Stages:** A RISC-V processor typically employs a pipeline architecture, where different stages handle different phases of instruction execution concurrently. Common pipeline stages include Fetch (instruction fetch), Decode (instruction decode and register read), Execute (ALU operations), Memory (memory access), and Write Back (write results to registers). These stages work in parallel, allowing multiple instructions to be processed simultaneously.
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/16449a61-d56a-4c99-ab63-7653a3e38bfd)
+
+	|cpu
+      @0
+         $reset = *reset;
+         $pc[31:0] = >>1$reset ? 0 : (>>1$pc + 32'd4);
+
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/e65a78a8-1554-4597-8793-b53ac2301d5e)
+
+**(B) Fetch** 
+
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/b1e7329a-a157-4bf4-ade2-32303c799b72)
+
+	|cpu
+      @0
+         $reset = *reset;
+         $pc[31:0] = >>1$reset ? 0 : (>>1$pc + 32'd4);
+      
+      @1 
+         $imem_rd_addr[M4_IMEM_INDEX_CNT-1:0] = $pc[M4_IMEM_INDEX_CNT+1:2];
+         $imem_rd_en = !$reset;
+         $instr[31:0] = $imem_rd_data[31:0];
+         
+      ?$imem_rd_en
+         @1
+            $imem_rd_data[31:0] = imem[$imem_rd_addr]$instr;
+	    
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/ceef5678-8c4c-44c0-84ad-040887eb8d5a)
+
+**(C) Decode Logic**  
+
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/f81254c2-e3d8-426b-b7f3-c3dcb09d12cc)
+
+
+
 
 
 
