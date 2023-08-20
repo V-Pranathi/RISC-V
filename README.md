@@ -594,7 +594,7 @@ Validity provides:
                      >>1$total_distance;
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/fb4c9612-b12a-4682-bb77-0fe479231162)
 
-**Cycle Calculator with Validity**
+**(B) Cycle Calculator with Validity**
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/fef7517b-1b13-4b96-b044-9aa8bb6fe335)
 
 	|calc
@@ -624,7 +624,7 @@ Validity provides:
             
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/e5c6d5a5-1aba-46b8-9b8d-0ec850f0d4d3)
 
-**Calculator with single value memory**
+**(C) Calculator with single value memory**
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/66e95146-0fea-4002-a599-d385cdd4e9ac)
 
 	|calc
@@ -657,5 +657,5 @@ Validity provides:
                           ($op[2:0] == 3'b100) ? >>2$mem : >>2$out ;
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/899e8e76-21ed-433c-b027-30d5015aa110)
 
-## <a name"4-rv-day-4---basic-risc-v-cpumicro-architecture"></a> 4. RV Day 4 - Basic RISC-V CPU micro-architecture ##
+## <a name="4-rv-day-4---basic-risc-v-cpumicro-architecture"></a> 4. RV Day 4 - Basic RISC-V CPU micro-architecture ##
 
