@@ -11,7 +11,7 @@
 * [3. RV Day 3 - Digital Logic with TL-Verilog and Makerchip](#3--rv-day-3---digital-logic-with-tl-verilog-and-makerchip)
   * [RV-D3SK1 - Combinational logic in TL-Verilog using Makerchip](#rv-d3sk1---combinational-logic-in-tl-verilog-using-makerchip)
   * [RV-D3SK2 - Sequential logic](#rv-d3sk2---sequential-logic)
-  * RV-D3SK3 - Pipelined logic
+  * [RV-D3SK3 - Pipelined logic](#rv-d3sk3---pipelined-logic)
   * RV-D3SK4 - Validity
   * RV Day 3 Wrap-up
 * [4. RV Day 4 - Basic RISC-V CPU micro-architecture](#4-rv-day-4---basic-risc-v-cpumicro-architecture)
@@ -459,4 +459,103 @@ This is how makerchip platform looks like(below is the example of pythagorean)
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/c70f5e27-285f-422f-b8df-f95e96634c78)
 
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/ac161209-5cfe-4c7f-ac24-095190dfd683)
+
+### <a name="rv-d3sk3---pipelined-logic"></a> RV-D3SK3 - Pipelined logic ###
+
+**Pipeline - Timing abstract**  Pipeline timing abstraction in Transaction-Level (TL) Verilog involves modeling the behavior of a pipelined digital system at a higher level of abstraction. Pipelining is a technique used to improve the throughput of digital systems by breaking down a complex operation into multiple stages, allowing multiple operations to be in progress simultaneously.  Pipeline timing helps to operate at higher frequency.
+
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/b1908ce8-0b9c-4688-ae0a-ef6e7a10c7f1)
+
+**Identifiers and types in TL verilog**  In Transaction-Level (TL) Verilog, identifiers are names used to represent various elements in your design, such as modules, signals, variables, and instances. Identifiers follow certain naming conventions and rules to ensure readability, consistency, and compatibility with the Verilog language.  
+
+_Naming Conventions:_
+      1.  $lower_case: Used for pipe signals, which represent communication between modules or stages in a pipeline.
+      2.  $CamelCase: Used for state signals, which often represent the state of a finite state machine (FSM).
+      3.  $Upper_CASE: Used for keyword signals, which typically represent control signals or special flags.
+_Identifier Structure:_
+      1. The first token of an identifier must start with at least two alphabetical characters (letters).
+      2. Identifiers can include numbers at the end of tokens, but they should follow the naming rules you've outlined. For example, $base64_value is valid, but $base_64 is not. 
+
+**Errors within computation pipeline**  
+
+	\TLV
+   	$reset = *reset;
+   
+   	|comp
+      @1
+         $err1 = $bad_input || $illegeal_op;
+      @3
+         $err2 = $err1 || $over_flow;
+      @6
+         $err3 = $err2 || $div_by_zer0;
+
+   	*passed = *cyc_cnt > 40;
+  	 *failed = 1'b0;
+	\SV
+  	 endmodule
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/6e533edf-2f41-447e-bd11-dbd7acd48709)
+
+**Calculator and Counter in Pipeline**  
+The block diagram:
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/ca020732-9fbe-4391-8b6f-353bddaa9e3d)
+
+	\TLV
+  	 $reset = *reset;
+   
+   	$val2[31:0] = $rand2[3:0];
+   
+  	 |calc
+     	 @1
+         
+         $val1[31:0] = >>1$out[31:0];
+   
+         $sum[31:0] = $val1 +  $val2;
+         $diff[31:0] = $val1 - $val2;
+         $prod[31:0] = $val1 * $val2;
+         $quot[31:0] = $val1 / $val2;
+   
+         $out[31:0] = $reset ? 32'b0 : ($opt[1] ? ($opt[0] ? $quot : $prod) : ($opt[0] ? $diff : $sum));
+         $cnt[31:0] = $reset ? 0 : (>>1$cnt + 1'b1);
+  
+   	*passed = *cyc_cnt > 40;
+   	*failed = 1'b0;
+	\SV
+   	endmodule
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/c720fa7d-3105-4198-b5c4-bfe8cba7e625)
+
+**(B) 2-Cycle Calculator**  
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/ba1938b8-3c35-45f3-b30e-5b91b8afa0fd)
+
+  	\TLV
+   $reset = *reset;
+   
+   $val2[31:0] = $rand2[3:0];
+   
+   |calc
+      @1
+         
+         $val1[31:0] = >>1$out[31:0];
+   
+         $sum[31:0] = $val1 +  $val2;
+         $diff[31:0] = $val1 - $val2;
+         $prod[31:0] = $val1 * $val2;
+         $quot[31:0] = $val1 / $val2;
+         $valid = $reset ? 0 : (>>1$valid + 1'b1);
+      
+      @2
+         
+         $out[31:0] = ($reset || !($valid)) ? 32'b0 : ($opt[1] ? ($opt[0] ? $quot : $prod) : ($opt[0] ? $diff : $sum));
+        
+   	*passed = *cyc_cnt > 40;
+  	 *failed = 1'b0;
+	\SV
+  	 endmodule
+
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/468ca649-d649-47ba-b802-5f49b7d3d446)
+
+
+
+
+
+
 
