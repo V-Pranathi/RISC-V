@@ -14,7 +14,7 @@
   * [RV-D3SK3 - Pipelined logic](#rv-d3sk3---pipelined-logic)
   * [RV-D3SK4 - Validity](#rv-d3sk4---validity)
 * [4. RV Day 4 - Basic RISC-V CPU micro-architecture](#4-rv-day-4---basic-risc-v-cpumicro-architecture)
-  * RV-D4SK1 - Introduction to Simple RISC-V Micro-architecture
+  * [RV-D4SK1 - Introduction to Simple RISC-V Micro-architecture](#rv-d4sk1---introduction-to-simple-risc-v-micro-architecture])
   * RV-D4SK2 - Fetch and decode
   * RV-D4SK3 - RISC-V control logic
 * [5. RV Day 5 - Complete Pipelined RISC-V CPU micro-architecture](#5--rv-day-5---complete-pipelined-risc-v-cpu-micro-architecture)
@@ -658,4 +658,33 @@ Validity provides:
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/899e8e76-21ed-433c-b027-30d5015aa110)
 
 ## <a name="4-rv-day-4---basic-risc-v-cpumicro-architecture"></a> 4. RV Day 4 - Basic RISC-V CPU micro-architecture ##
+### <a name="rv-d4sk1---introduction-to-simple-risc-v-micro-architecture"></a> RV-D4SK1 - Introduction to Simple RISC-V Micro-architecture ###
+**RISC-V block diagram**  A block diagram of a RISC-V processor provides a high-level overview of its major components and how they are interconnected. Here's a block diagram of a typical RISC-V processor:
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/cfe37ccc-c7e9-4cce-ae86-6e1ae69831f5)
+
+**1. Decoder:** The decoder is a crucial component in a processor that takes an instruction as input (typically in binary form) and decodes it to generate control signals that direct the various functional units within the processor. It determines the operation to be performed, the registers involved, memory access requirements, and other microoperations associated with the instruction. The decoder's output controls the operation of subsequent stages in the pipeline.
+
+**2. Instruction Memory:** The instruction memory (often referred to as the "instruction cache") is responsible for storing the machine instructions that the processor fetches and decodes. Instructions are read from memory addresses specified by the program counter (PC). The instruction memory supplies the fetched instruction to the decoder, which then extracts and decodes the opcode and operands.
+
+**3. ALU (Arithmetic Logic Unit):** The ALU is a functional unit within the processor responsible for performing arithmetic and logical operations on data. It can perform tasks like addition, subtraction, bitwise operations, comparisons, shifts, and more. The ALU takes input operands from registers and produces results that might be stored back in registers or used for subsequent operations.
+
+**4. ALU Control Unit:** The ALU control unit generates control signals to configure the ALU for the specific operation required by the instruction being executed. For example, it might determine whether the ALU should perform addition, subtraction, bitwise AND, OR, etc., based on the instruction's opcode and any associated immediate values.
+
+**5. Register File:** The register file is a storage component that holds the processor's general-purpose registers. These registers are used for temporary storage of data during instruction execution. In RISC-V, the register file contains a fixed number of registers (e.g., 32 registers in a standard RISC-V implementation).
+
+**6. Data Memory:** The data memory (often referred to as the "data cache") is used for reading from and writing to data values in memory. It holds the data used in memory load and store operations. Data memory access can be more time-consuming than register access due to the latency associated with memory hierarchy, caches, and main memory.
+
+**7. Control Unit:** The control unit generates and coordinates control signals for various parts of the processor to ensure correct execution of instructions. It manages the flow of data between different stages of the pipeline, controls register operations, memory accesses, ALU operations, and branching decisions.
+
+**8. Pipeline Stages:** A RISC-V processor typically employs a pipeline architecture, where different stages handle different phases of instruction execution concurrently. Common pipeline stages include Fetch (instruction fetch), Decode (instruction decode and register read), Execute (ALU operations), Memory (memory access), and Write Back (write results to registers). These stages work in parallel, allowing multiple instructions to be processed simultaneously.
+
+
+
+
+
+
+
+
+
+
 
