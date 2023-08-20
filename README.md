@@ -9,7 +9,7 @@
   * [RV-D2SK2 - Lab work using ABI function calls](#rv-d2sk2---lab-work-using-abi-function-calls)
   * [RV-D2SK3 - Basic verification flow using iverilog](#rv-d2sk3---basic-verification-flow-using-iverilog)
 * [3. RV Day 3 - Digital Logic with TL-Verilog and Makerchip](#3--rv-day-3---digital-logic-with-tl-verilog-and-makerchip)
-  * RV-D3SK1 - Combinational logic in TL-Verilog using Makerchip
+  * [RV-D3SK1 - Combinational logic in TL-Verilog using Makerchip](#rv-d3sk1---combinational-logic-in-tl-verilog-using-makerchip)
   * RV-D3SK2 - Sequential logic
   * RV-D3SK3 - Pipelined logic
   * RV-D3SK4 - Validity
@@ -358,5 +358,6 @@ Inorder to run rv32im.sh file steps involved are:
 
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/36900341-5408-4d55-bdf6-f71230d85dfb)
 
-
+## <a name="3--rv-day-3---digital-logic-with-tl-verilog-and-makerchip3"></a> RV Day 3 - Digital Logic with TL-Verilog and Makerchip ##
+### <a name="rv-d3sk1---combinational-logic-in-tl-verilog-using-makerchip"></a> RV-D3SK1 - Combinational logic in TL-Verilog using Makerchip ###
 
