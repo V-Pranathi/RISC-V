@@ -10,7 +10,7 @@
   * [RV-D2SK3 - Basic verification flow using iverilog](#rv-d2sk3---basic-verification-flow-using-iverilog)
 * [3. RV Day 3 - Digital Logic with TL-Verilog and Makerchip](#3--rv-day-3---digital-logic-with-tl-verilog-and-makerchip)
   * [RV-D3SK1 - Combinational logic in TL-Verilog using Makerchip](#rv-d3sk1---combinational-logic-in-tl-verilog-using-makerchip)
-  * RV-D3SK2 - Sequential logic
+  * [RV-D3SK2 - Sequential logic](#rv-d3sk2---sequential-logic)
   * RV-D3SK3 - Pipelined logic
   * RV-D3SK4 - Validity
   * RV Day 3 Wrap-up
@@ -388,5 +388,8 @@ This is how makerchip platform looks like(below is the example of pythagorean)
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/c096e8ee-de40-4fdc-82d9-4cfbd212e91e)
 
 **(F) Calculator on makerchip**
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/79c59025-ef99-4f5d-9f20-fd64e090f7ee)
 
+### <a name="rv-d3sk2---sequential-logic"></a> RV-D3SK2 - Sequential logic ###
 
+**(A) Fibonacci series
