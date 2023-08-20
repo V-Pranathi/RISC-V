@@ -372,24 +372,85 @@ In contrast to the traditional gate-level Verilog, which focuses on describing t
 This is how makerchip platform looks like(below is the example of pythagorean)
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/2542e664-d829-4fcc-a6d5-a04478cdc929)
 
-**(A) Inverter example on makerchip** 
+**(A) Inverter on makerchip** 
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/31d2a237-099a-4c7b-bce1-88144fde705f)
 
-**(B) OR gate example on makerchip**
+**(B) OR gate on makerchip**
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/d2582d1d-99a9-4a01-934c-171ebbe4d1d1)
 
-**(C) Vectors example on makerchip**
+**(C) Vectors on makerchip**
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/82787089-1f99-4c1b-a5a0-a488bcdda3d7)
 
-**(D) 1 bit Multiplexer example on makerchip**
+**(D) 1 bit Multiplexer on makerchip**
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/8dc0b851-29b1-4cc3-9014-a0e4647d3c3d)
 
-**(E) Multiplexer example on makerchip**
+**(E) Multiplexer on makerchip**
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/c096e8ee-de40-4fdc-82d9-4cfbd212e91e)
 
 **(F) Calculator on makerchip**
+
+	\TLV
+  	 $reset = *reset;
+   
+  	 $val1[31:0] = $rand1[3:0];
+  	 $val2[31:0] = $rand2[3:0];
+   
+  	 $sum[31:0] = $val1 + $val2;
+  	 $diff[31:0] = $val1 - $val2;
+  	 $prod[31:0] = $val1 * $val2;
+  	 $quot[31:0] = $val1 / $val2;
+   
+   	$out[31:0] = $opt[1] ? ($opt[0] ? $quot : $prod) : ($opt[0] ? $diff : $sum);
+    
+   	*passed = *cyc_cnt > 40;
+   	*failed = 1'b0;
+	\SV
+ 	  endmodule
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/79c59025-ef99-4f5d-9f20-fd64e090f7ee)
 
 ### <a name="rv-d3sk2---sequential-logic"></a> RV-D3SK2 - Sequential logic ###
 
-**(A) Fibonacci series
+**(A) Fibonacci sequence on makerchip**
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/4775a2d8-057e-48de-b962-d87823077b21)
+
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/60d65a7a-2222-4526-9dea-dbaf4446ff47)
+
+
+**(B) Counter on makerchip**
+
+	\TLV
+  	 $reset = *reset;
+   
+ 	 $cnt[31:0] = $reset ? 0 : (>>1$cnt + 1'b1);
+   
+  	 *passed = *cyc_cnt > 40;
+  	 *failed = 1'b0;
+	 \SV
+ 	 endmodule
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/8c3f2a86-b61e-4555-912e-d282de928751)
+
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/14c708fd-bf30-43e8-91c3-44e2dad318f3)
+
+**(C) Sequential calculator on makerchip**
+
+         \TLV
+	 $reset = *reset;
+   
+  	 $val2[31:0] = $rand2[3:0];
+  	 $val1[31:0] = >>1$out[31:0];
+   
+  	 $sum[31:0] = $val1 +  $val2;
+  	 $diff[31:0] = $val1 - $val2;
+   	 $prod[31:0] = $val1 * $val2;
+  	 $quot[31:0] = $val1 / $val2;
+   
+  	 $out[31:0] = $reset ? 0 : ($opt[1] ? ($opt[0] ? $quot : $prod) : ($opt[0] ? $diff : $sum));
+    
+   	*passed = *cyc_cnt > 40;
+   	*failed = 1'b0;
+	\SV
+   	endmodule
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/c70f5e27-285f-422f-b8df-f95e96634c78)
+
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/ac161209-5cfe-4c7f-ac24-095190dfd683)
+
