@@ -360,4 +360,13 @@ Inorder to run rv32im.sh file steps involved are:
 
 ## <a name="3--rv-day-3---digital-logic-with-tl-verilog-and-makerchip3"></a> RV Day 3 - Digital Logic with TL-Verilog and Makerchip ##
 ### <a name="rv-d3sk1---combinational-logic-in-tl-verilog-using-makerchip"></a> RV-D3SK1 - Combinational logic in TL-Verilog using Makerchip ###
+**Introduction to Logic gates**  
+Logic gates are fundamental building blocks of digital circuits and are used to perform logical operations on binary data, which consists of 0s and 1s. These gates are the foundational components that allow computers and other digital devices to process and manipulate information.  
+There are several types of basic logic gates, each performing a specific logical operation:  
+![Screenshot from 2023-08-20 17-40-35](https://github.com/V-Pranathi/RISC-V/assets/140998763/ce5959f9-92bc-427a-981c-b6eaaa13bf79)
+
+
+
+
+
 
