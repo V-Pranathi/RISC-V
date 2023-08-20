@@ -471,7 +471,7 @@ This is how makerchip platform looks like(below is the example of pythagorean)
 _Naming Conventions:_
       1.  $lower_case: Used for pipe signals, which represent communication between modules or stages in a pipeline.
       2.  $CamelCase: Used for state signals, which often represent the state of a finite state machine (FSM).
-      3.  $Upper_CASE: Used for keyword signals, which typically represent control signals or special flags.
+      3.  $Upper_CASE: Used for keyword signals, which typically represent control signals or special flags.  
 _Identifier Structure:_
       1. The first token of an identifier must start with at least two alphabetical characters (letters).
       2. Identifiers can include numbers at the end of tokens, but they should follow the naming rules you've outlined. For example, $base64_value is valid, but $base_64 is not. 
@@ -527,12 +527,12 @@ The block diagram:
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/ba1938b8-3c35-45f3-b30e-5b91b8afa0fd)
 
   	\TLV
-   $reset = *reset;
+  	 $reset = *reset;
    
-   $val2[31:0] = $rand2[3:0];
+   	 $val2[31:0] = $rand2[3:0];
    
-   |calc
-      @1
+  	 |calc
+      	 @1
          
          $val1[31:0] = >>1$out[31:0];
    
