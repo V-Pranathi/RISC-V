@@ -6,7 +6,7 @@
   * [RV-D1SK3 - Integer number representation](#rv-d1sk3---integer-number-representation)
 * [2. RV Day 2 - Introduction to ABI and basic verification flow](#2--rv-day-2-introduction-to-abi-and-basic-verification-flow)
   * [RV-D2SK1 - Application Binary interface (ABI)](#rv-d2sk1---application-binary-interface-(abi))
-  * RV-D2SK2 - Lab work using ABI function calls
+  * [RV-D2SK2 - Lab work using ABI function calls](#rv-d2sk2---lab-work-using-abi-function-calls)
   * RV-D2SK3 - Basic verification flow using iverilog
 * [3. RV Day 3 - Digital Logic with TL-Verilog and Makerchip](#3--rv-day-3---digital-logic-with-tl-verilog-and-makerchip)
   * RV-D3SK1 - Combinational logic in TL-Verilog using Makerchip
@@ -278,11 +278,84 @@ In the RISC-V instruction set architecture (ISA), instructions are categorized b
     	Common examples include SW (store word) and SH (store halfword).
 	Syntax: OP rs2, imm(rs1)
 _Registers_ As we can see in the above figure 5bits are needed to represent each register. So if we calculate total number of registers we can have it will be, 2^5=32. Different types of registers is shown below.
+
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/f217f1ac-2e8e-4e06-957a-9389178f777c)
- 
+
+### <a name="rv-d2sk2---lab-work-using-abi-function-calls"></a> RV-D2SK2 - Lab work using ABI function calls ###
+
+Using ASM(Assembly language program) we are writing the code for sum of numbers from 1 to 9. We have main program in 1to9_custom.c file which does the function call and the function get calls in load.S
+
+	//custom_1to9.c
+	#include<stdio.h>
+	extern int load(int x,int y); //defined function over here
+
+	int main{
+	int result=0;
+  	int count=9;
+	result = load(0x0, count+1);
+
+	printf("sum of numbers from 1 to %d is %d\n", count,result);
+	}
 
 
+	//load.S
+ 	.section .text	
+	.global load
+	.type load, @function
 
+	load: 
+		add  a4, a0, 0
+		add  a2, a1, 0
+		add  a3, 0, 0
+	loop:
+		add  a4, a4, a3
+		add  a3, a3, 1
+		blt  a3, a2, loop
+		add  a0, a4, 0
+		ret
+_Output of sum of numbers from 1 to 9 using ASM function calling from C program_:
+
+	$ riscv64-unknown-elf-gcc -Ofast -mabi=lp64 -march=rv64i -o 1to9_custom.o 1to9_custom.c load.S
+	~$ spike pk 1to9_custom.o
+
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/2afb3ceb-05c1-4e01-bd05-94bf7438e1c3)
+
+
+_Object dump_:
+	$ riscv64-unknown-elf-objdump -d 1to9_custom.o | less
+
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/bb82d71c-78b4-457c-8a45-9e5bacf80ed3)
+
+**Lab to run C-program on RISC-V CPU** The flow is shown below
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/af19b2a3-3d8d-4d8f-aa91-95b27b8976b4)
+
+There is this rv32im.sh file which is the script file which contain scripts that are needed to convert into hex file which is firmware.hex and load it into picor32.v memory using testbench.v and simulate it at the end.
+
+rv32im.sh file contains
+
+ 	riscv64-unknown-elf-gcc -c -mabi=ilp32 -march=rv32im -o 1to9_custom.o 1to9_custom.c 
+	riscv64-unknown-elf-gcc -c -mabi=ilp32 -march=rv32im -o load.o load.S
+
+	riscv64-unknown-elf-gcc -c -mabi=ilp32 -march=rv32im -o syscalls.o syscalls.c
+	riscv64-unknown-elf-gcc -mabi=ilp32 -march=rv32im -Wl,--gc-sections -o firmware.elf load.o 1to9_custom.o syscalls.o -T riscv.ld -lstdc++
+	chmod -x firmware.elf
+	riscv64-unknown-elf-gcc -mabi=ilp32 -march=rv32im -nostdlib -o start.elf start.S -T start.ld -lstdc++
+	chmod -x start.elf
+	riscv64-unknown-elf-objcopy -O verilog start.elf start.tmp
+	riscv64-unknown-elf-objcopy -O verilog firmware.elf firmware.tmp
+ 	 cat start.tmp firmware.tmp > firmware.hex
+	python3 hex8tohex32.py firmware.hex > firmware32.hex
+	rm -f start.tmp firmware.tmp
+	iverilog -o testbench.vvp testbench.v picorv32.v
+  	chmod -x testbench.vvp
+	vvp -N testbench.vvp
+
+Inorder to run rv32im.sh file steps involved are:
+
+	$ chmod 777 rv32im.sh // change the permissions
+	$ ./rv32im.sh 
+
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/36900341-5408-4d55-bdf6-f71230d85dfb)
 
 
 
