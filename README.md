@@ -12,8 +12,7 @@
   * [RV-D3SK1 - Combinational logic in TL-Verilog using Makerchip](#rv-d3sk1---combinational-logic-in-tl-verilog-using-makerchip)
   * [RV-D3SK2 - Sequential logic](#rv-d3sk2---sequential-logic)
   * [RV-D3SK3 - Pipelined logic](#rv-d3sk3---pipelined-logic)
-  * RV-D3SK4 - Validity
-  * RV Day 3 Wrap-up
+  * [RV-D3SK4 - Validity](#rv-d3sk4---validity)
 * [4. RV Day 4 - Basic RISC-V CPU micro-architecture](#4-rv-day-4---basic-risc-v-cpumicro-architecture)
   * RV-D4SK1 - Introduction to Simple RISC-V Micro-architecture
   * RV-D4SK2 - Fetch and decode
@@ -472,6 +471,7 @@ _Naming Conventions:_
       1.  $lower_case: Used for pipe signals, which represent communication between modules or stages in a pipeline.
       2.  $CamelCase: Used for state signals, which often represent the state of a finite state machine (FSM).
       3.  $Upper_CASE: Used for keyword signals, which typically represent control signals or special flags.  
+      
 _Identifier Structure:_
       1. The first token of an identifier must start with at least two alphabetical characters (letters).
       2. Identifiers can include numbers at the end of tokens, but they should follow the naming rules you've outlined. For example, $base64_value is valid, but $base_64 is not. 
@@ -553,9 +553,109 @@ The block diagram:
 
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/468ca649-d649-47ba-b802-5f49b7d3d446)
 
+### <a name="rv-d3sk4---validity"></a> RV-D3SK4 - Validity ###
 
+**Validity:** In Transaction-Level (TL) Verilog, validity refers to the state of a signal that indicates whether a particular piece of data or information is valid or not. It's commonly used in designs involving communication between different modules or stages, such as in pipelined architectures or when dealing with data transfers between components. Validity signals help control the flow of data and ensure that the data being processed is meaningful and accurate.  
 
+Validity signaling is especially important when working at a higher level of abstraction, as it allows you to model data transfers and interactions without diving into the low-level details of timing and specific data transitions.  
 
+Validity provides:
+* Easier debug
+* Cleaner design
+* Better error checking
+* Automated clock gating
 
+**Clock Gating:** Clock gating is a power-saving technique used in digital circuit design to reduce the dynamic power consumption of a circuit by controlling the clock signal to specific components or modules when they are not actively needed. TL-Verilog can produce fine-grained gating(Enable). It involves enabling or disabling the clock signal to certain portions of a circuit based on their operational requirements. This helps conserve power by reducing unnecessary clock switching and activity. In clock gating, the clock signal is used as a control signal to enable or disable the operation of certain elements within a design. When a component's clock is gated off (disabled), it effectively stops processing and consuming power, thereby reducing power consumption. When the component's clock is gated on (enabled), it resumes normal operation.  
 
+**(A) Distance Accumulator on makerchip**  
+
+	\TLV
+  	 $reset = *reset;
+
+  	 |calc
+     	 @1
+         $reset = *reset;
+            
+      ?$vaild      
+         @1
+            $aa_seq[31:0] = $aa[3:0] * $aa;
+            $bb_seq[31:0] = $bb[3:0] * $bb;;
+      
+         @2
+            $cc_seq[31:0] = $aa_seq + $bb_seq;;
+      
+         @3
+            $cc[31:0] = sqrt($cc_seq);
+            
+      @4
+         $total_distance[63:0] = 
+            $reset ? '0 :
+            $valid ? >>1$total_distance + $cc :
+                     >>1$total_distance;
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/fb4c9612-b12a-4682-bb77-0fe479231162)
+
+**Cycle Calculator with Validity**
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/fef7517b-1b13-4b96-b044-9aa8bb6fe335)
+
+	|calc
+      @0
+         $reset = *reset;
+         
+      @1
+         $val1 [31:0] = >>2$out [31:0];
+         $val2 [31:0] = $rand2[3:0];
+         
+         $valid = $reset ? 1'b0 : >>1$valid + 1'b1 ;
+         $valid_or_reset = $valid || $reset;
+         
+      ?$vaild_or_reset
+         @1   
+            $sum [31:0] = $val1 + $val2;
+            $diff[31:0] = $val1 - $val2;
+            $prod[31:0] = $val1 * $val2;
+            $quot[31:0] = $val1 / $val2;
+            
+         @2   
+            $out [31:0] = $reset ? 32'b0 :
+                          ($op[1:0] == 2'b00) ? $sum :
+                          ($op[1:0] == 2'b01) ? $diff :
+                          ($op[1:0] == 2'b10) ? $prod :
+                                                $quot ;
+            
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/e5c6d5a5-1aba-46b8-9b8d-0ec850f0d4d3)
+
+**Calculator with single value memory**
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/66e95146-0fea-4002-a599-d385cdd4e9ac)
+
+	|calc
+      @0
+         $reset = *reset;
+         
+      @1
+         $val1 [31:0] = >>2$out;
+         $val2 [31:0] = $rand2[3:0];
+         
+         $valid = $reset ? 1'b0 : >>1$valid + 1'b1 ;
+         $valid_or_reset = $valid || $reset;
+         
+      ?$vaild_or_reset
+         @1   
+            $sum [31:0] = $val1 + $val2;
+            $diff[31:0] = $val1 - $val2;
+            $prod[31:0] = $val1 * $val2;
+            $quot[31:0] = $val1 / $val2;
+            
+         @2   
+            $mem[31:0] = $reset ? 32'b0 :
+                         ($op[2:0] == 3'b101) ? $val1 : >>2$mem ;
+            
+            $out [31:0] = $reset ? 32'b0 :
+                          ($op[2:0] == 3'b000) ? $sum :
+                          ($op[2:0] == 3'b001) ? $diff :
+                          ($op[2:0] == 3'b010) ? $prod :
+                          ($op[2:0] == 3'b011) ? $quot :
+                          ($op[2:0] == 3'b100) ? >>2$mem : >>2$out ;
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/899e8e76-21ed-433c-b027-30d5015aa110)
+
+## <a name"4-rv-day-4---basic-risc-v-cpumicro-architecture"></a> 4. RV Day 4 - Basic RISC-V CPU micro-architecture ##
 
