@@ -223,12 +223,63 @@ The  bug over here is instead of 'int' we have to change it into "long long int"
 ## <a name="2--rv-day-2-introduction-to-abi-and-basic-verification-flow"></a> 2. RV Day 2 - Introduction to ABI and basic verification flow ##
 ### <a name="rv-d2sk1---application-binary-interface-(abi)"></a> RV-D2SK1 - Application Binary interface (ABI)  ###
 
-**Application Binary Interface**
+1. **Application Binary Interface** - In the context of RISC-V, the ABI specifies how system calls are invoked and how data is passed between user-mode applications and the operating system. Specifically, the ABI defines which registers are used for passing parameters to system calls and for receiving return values. It also specifies how the system call number (which corresponds to the specific service being requested) is passed to the operating system.
+2. **Register Width in RISC-V** - The width of registers in the RISC-V architecture is determined by the value of XLEN, which represents the native word size of the processor. XLEN is defined at the time the RISC-V architecture is implemented and can be different for different variations of the architecture.
+  * For RV64 (RISC-V 64-bit architecture), XLEN is 64 bits. This means that general-purpose registers and other data paths in the processor are 64 bits wide.
+  * For RV32 (RISC-V 32-bit architecture), XLEN is 32 bits. In this case, general-purpose registers and data paths are 32 bits wide.
+3. **Registers** - In RISC-V there are 32 registers(x1-x31). We can load the registers in two different ways.
+  *  Load directly into the registers.
+  *  Load into the memory and then to register.(Each memory cell hold 1byte for 64bits data to load into memory we need 8 such memory cells)
+4. **Little-endian memory addressing system** - RISC-V belongs to the little endian memory addressing system.In a little-endian system, the least significant byte (LSB) of a multi-byte value is stored at the lowest memory address, while the most significant byte (MSB) is stored at the highest memory address.
+     
+**LOAD** -"load" instructions are used to fetch data from memory and load it into registers. 
+	
+    LD (Load Doubleword):
+    
+    Syntax: LD rd, imm(rs1)
+    Description: Loads a 64-bit doubleword from memory at the effective address (rs1 + imm) and stores it in register rd.
+    Example: LD x9, 16(x6) loads a 64-bit doubleword from memory at the address stored in x6 plus an offset of 16 and   stores it in x9.
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/9c6f5930-2129-4420-bbb7-f3fe7b26500a)
 
+**ADD** -  "ADD" instruction is used to add the contents of two registers and store the result in a destination register. 
+	
+    ADD (Add):
+  
+    Syntax: ADD rd, rs1, rs2
+    Description: Adds the value in register rs1 to the value in register rs2 and stores the result in register rd.
+    Example: ADD x12, x13, x14 adds the content of register x13 to the content of register x14 and stores the result in x12.
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/66bc0bcd-5c67-47d9-8c2c-39c52014ba5a)
 
+**STORE** - "STORE" instructionis used to store a double-word (64-bit) value from a register into memory.
 
+    SD (Store Doubleword):
 
+    Syntax: SD rs2, imm(rs1)
+    Description: Stores a 64-bit doubleword from register rs2 into memory at the effective address (rs1 + imm).
+    Example: SD x15, 24(x16) stores the 64-bit value from register x15 into memory at the address stored in x16 plus an offset of 24.
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/d31f693b-26dc-4983-bb84-bff75182e803)
 
+In the RISC-V instruction set architecture (ISA), instructions are categorized based on their formats and functionalities. The I-type, R-type, and S-type instructions are three common categories of instructions in RISC-V. These categories help describe the structure of the instruction and how they operate on data.
+  1. I-Type Instructions (Immediate):
+        I-type instructions are used for operations that involve an immediate value (constant) and a register.
+        The immediate value is encoded within the instruction itself.
+        Common examples include ADDI (add immediate), LW (load word), and SW (store word).
+        Syntax: OP rd, rs1, imm
+
+  2. R-Type Instructions (Register):
+        R-type instructions are used for operations that involve registers.
+        The operation is specified by the opcode, and both source registers and destination registers are used.
+        Common examples include ADD (add), SUB (subtract), and AND (bitwise AND).
+        Syntax: OP rd, rs1, rs2
+
+  3. S-Type Instructions (Store):
+	S-type instructions are used for storing data from a register into memory.
+	They involve two registers and an offset that determines the memory location.
+    	Common examples include SW (store word) and SH (store halfword).
+	Syntax: OP rs2, imm(rs1)
+_Registers_ As we can see in the above figure 5bits are needed to represent each register. So if we calculate total number of registers we can have it will be, 2^5=32. Different types of registers is shown below.
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/f217f1ac-2e8e-4e06-957a-9389178f777c)
+ 
 
 
 
