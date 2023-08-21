@@ -14,7 +14,7 @@
   * [RV-D3SK3 - Pipelined logic](#rv-d3sk3---pipelined-logic)
   * [RV-D3SK4 - Validity](#rv-d3sk4---validity)
 * [4. RV Day 4 - Basic RISC-V CPU micro-architecture](#4-rv-day-4---basic-risc-v-cpumicro-architecture)
-  * [RV-D4SK1 - Introduction to Simple RISC-V Micro-architecture](#rv-d4sk1---introduction-to-simple-risc-v-micro-architecture])
+  * [RV-D4SK1 - Introduction to Simple RISC-V Micro-architecture](#rv-d4sk1---introduction-to-simple-risc-v-micro-architecture)
   * [RV-D4SK2 - Fetch and decode](#rv-d4sk2---fetch-and-decode)
   * [RV-D4SK3 - RISC-V control logic](#rv-d4sk3---risc-v-control-logic)
 * [5. RV Day 5 - Complete Pipelined RISC-V CPU micro-architecture](#5--rv-day-5---complete-pipelined-risc-v-cpu-micro-architecture)
