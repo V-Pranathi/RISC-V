@@ -15,8 +15,8 @@
   * [RV-D3SK4 - Validity](#rv-d3sk4---validity)
 * [4. RV Day 4 - Basic RISC-V CPU micro-architecture](#4-rv-day-4---basic-risc-v-cpumicro-architecture)
   * [RV-D4SK1 - Introduction to Simple RISC-V Micro-architecture](#rv-d4sk1---introduction-to-simple-risc-v-micro-architecture])
-  * RV-D4SK2 - Fetch and decode
-  * RV-D4SK3 - RISC-V control logic
+  * [RV-D4SK2 - Fetch and decode](#rv-d4sk2---fetch-and-decode)
+  * [RV-D4SK3 - RISC-V control logic](#rv-d4sk3---risc-v-control-logic)
 * [5. RV Day 5 - Complete Pipelined RISC-V CPU micro-architecture](#5--rv-day-5---complete-pipelined-risc-v-cpu-micro-architecture)
   * RV-D5SK1 - Pipelining the CPU
   * RV-D5SK2 - Solutions to Pipeline Hazards
@@ -675,6 +675,8 @@ Validity provides:
 
 **6. Data Memory:** The data memory (often referred to as the "data cache") is used for reading from and writing to data values in memory. It holds the data used in memory load and store operations. Data memory access can be more time-consuming than register access due to the latency associated with memory hierarchy, caches, and main memory.  
 
+### <a name="rv-d4sk2---fetch-and-decode"></a> RV-D4SK2 - Fetch and decode ###
+
 **(A) PC increment**  
 
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/16449a61-d56a-4c99-ab63-7653a3e38bfd)
@@ -706,14 +708,163 @@ Validity provides:
 	    
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/ceef5678-8c4c-44c0-84ad-040887eb8d5a)
 
-**(C) Decode Logic**  
+**(C)Instruction Types Decode Logic**  
+In the Instruction Decode logic, all the instructions are decoded for the type of instruction, immediate instructions and the field type instructions. The opcode values are translated into instructions, and all the bit values are interpreted as per defined in the RISC-V ISA.
+
+At first, the Instruction type is decoded using 5 bits of the instruction instr[6:2]. The lower two bits from [1:0] are always equal to '11' for Base integer instructions. 
+
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/230bcef4-09fc-4975-bdaa-a98d09f8cf4c)
 
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/f81254c2-e3d8-426b-b7f3-c3dcb09d12cc)
 
+	   |cpu
+      @0
+         $reset = *reset;
+         
+         //NEXT PC
+         $pc[31:0] = >>1$reset ? 32'b0 : >>1$pc + 32'd4;
+         
+         //INSTRUCTION FETCH
+      @1
+         $imem_rd_addr[M4_IMEM_INDEX_CNT-1:0] = $pc[M4_IMEM_INDEX_CNT+1:2];
+         $imem_rd_en = !$reset;
+         $instr[31:0] = $imem_rd_data[31:0];
+         
+      ?$imem_rd_en
+         @1
+            $imem_rd_data[31:0] = /imem[$imem_rd_addr]$instr;
+            
+            
+         //INSTRUCTION TYPES DECODE         
+      @1
+         $is_u_instr = $instr[6:2] ==? 5'b0x101;
+         
+         $is_s_instr = $instr[6:2] ==? 5'b0100x;
+         
+         $is_r_instr = $instr[6:2] ==? 5'b01011 ||
+                       $instr[6:2] ==? 5'b011x0 ||
+                       $instr[6:2] ==? 5'b10100;
+         
+         $is_j_instr = $instr[6:2] ==? 5'b11011;
+         
+         $is_i_instr = $instr[6:2] ==? 5'b0000x ||
+                       $instr[6:2] ==? 5'b001x0 ||
+                       $instr[6:2] ==? 5'b11001;
+         
+         $is_b_instr = $instr[6:2] ==? 5'b11000;
+	 
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/8afd9f38-5fea-44af-a54e-551b002b4fa0)
 
+**(D) Instruction decode logic**
 
+	  //INSTRUCTION IMMEDIATE DECODE
+         $imm[31:0] = $is_i_instr ? {{21{$instr[31]}}, $instr[30:20]} :
+                      $is_s_instr ? {{21{$instr[31]}}, $instr[30:25], $instr[11:7]} :
+                      $is_b_instr ? {{20{$instr[31]}}, $instr[7], $instr[30:25], $instr[11:8], 1'b0} :
+                      $is_u_instr ? {$instr[31:12], 12'b0} :
+                      $is_j_instr ? {{12{$instr[31]}}, $instr[19:12], $instr[20], $instr[30:21], 1'b0} :
+                                    32'b0;
+         
+         
+         //INSTRUCTION DECODE
+         $opcode[6:0] = $instr[6:0];
+         
+         
+         //INSTRUCTION FIELD DECODE
+         $rs2_valid = $is_r_instr || $is_s_instr || $is_b_instr;
+         ?$rs2_valid
+            $rs2[4:0] = $instr[24:20];
+            
+         $rs1_valid = $is_r_instr || $is_i_instr || $is_s_instr || $is_b_instr;
+         ?$rs1_valid
+            $rs1[4:0] = $instr[19:15];
+         
+         $funct3_valid = $is_r_instr || $is_i_instr || $is_s_instr || $is_b_instr;
+         ?$funct3_valid
+            $funct3[2:0] = $instr[14:12];
+            
+         $funct7_valid = $is_r_instr ;
+         ?$funct7_valid
+            $funct7[6:0] = $instr[31:25];
+            
+         $rd_valid = $is_r_instr || $is_i_instr || $is_u_instr || $is_j_instr;
+         ?$rd_valid
+            $rd[4:0] = $instr[11:7];
+         
+         
+         //INSTRUCTION DECODE
+         $dec_bits [10:0] = {$funct7[5], $funct3, $opcode};
+         $is_beq = $dec_bits ==? 11'bx_000_1100011;
+         $is_bne = $dec_bits ==? 11'bx_001_1100011;
+         $is_blt = $dec_bits ==? 11'bx_100_1100011;
+         $is_bge = $dec_bits ==? 11'bx_101_1100011;
+         $is_bltu = $dec_bits ==? 11'bx_110_1100011;
+         $is_bgeu = $dec_bits ==? 11'bx_111_1100011;
+         $is_addi = $dec_bits ==? 11'bx_000_0010011;
+         $is_add = $dec_bits ==? 11'b0_000_0110011;
+         
+         `BOGUS_USE ($is_beq $is_bne $is_blt $is_bge $is_bltu $is_bgeu $is_addi $is_add)
 
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/2b1f7099-e374-4e2e-a19a-be91d69f0998)
 
+### <a name="rv-d4sk3---risc-v-control-logic"></a> RV-D4SK3 - RISC-V control logic ###
+
+**(A) Register file read**  
+
+	//REGISTER FILE READ
+         $rf_wr_en = 1'b0;
+         $rf_wr_index[4:0] = 5'b0;
+         $rf_wr_data[31:0] = 32'b0;
+         $rf_rd_en1 = $rs1_valid;
+         $rf_rd_index1[4:0] = $rs1;
+         $rf_rd_en2 = $rs2_valid;
+         $rf_rd_index2[4:0] = $rs2;
+         
+         $src1_value[31:0] = $rf_rd_data1;
+         $src2_value[31:0] = $rf_rd_data2;
+	 
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/d85a62d0-2cac-4a65-98fe-ea7c69da8d86)
+
+**(B) ALU**
+
+	//ARITHMETIC AND LOGIC UNIT (ALU)
+         $result[31:0] = $is_addi ? $src1_value + $imm :
+                         $is_add ? $src1_value + $src2_value :
+                         32'bx ;
+
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/91984b31-9fdb-4750-b94a-d45edebf4085)
+
+**(C) Register File Write**
+
+	//REGISTER FILE WRITE
+         $rf_wr_en = $rd_valid && $rd != 5'b0;
+         $rf_wr_index[4:0] = $rd;
+         $rf_wr_data[31:0] = $result;
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/fff88544-910c-4129-bfd1-e566bc73ef09)
+
+**(D) Branch instructions**  
+
+ 	//BRANCH INSTRUCTIONS 1
+         $taken_branch = $is_beq ? ($src1_value == $src2_value):
+                         $is_bne ? ($src1_value != $src2_value):
+                         $is_blt ? (($src1_value < $src2_value) ^ ($src1_value[31] != $src2_value[31])):
+                         $is_bge ? (($src1_value >= $src2_value) ^ ($src1_value[31] != $src2_value[31])):
+                         $is_bltu ? ($src1_value < $src2_value):
+                         $is_bgeu ? ($src1_value >= $src2_value):
+                                    1'b0;
+         `BOGUS_USE($taken_branch)
+         
+         //BRANCH INSTRUCTIONS 2
+         $br_target_pc[31:0] = $pc +$imm;
+	 
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/bc79d3c9-08c9-439e-973a-80a20af21458)
+
+**(E) Test bench**
+
+         //TESTBENCH
+          *passed = |cpu/xreg[10]>>5$value == (1+2+3+4+5+6+7+8+9) ;
+
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/a8ec5e60-8646-456e-89dd-e37b8e7d537d)
 
 
 
