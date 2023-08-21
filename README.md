@@ -21,6 +21,7 @@
   * RV-D5SK1 - Pipelining the CPU
   * RV-D5SK2 - Solutions to Pipeline Hazards
   * RV-D5SK3 - Load/Store Instructions and Completing RISC-V CPU
+* [6. References](#6--references)
 ## <a name="1--rv-day-1-introduction-to-risc-v-isa-and-gnu-compiler-toolchain"></a> 1. RV DAY 1 Introduction to RISC-V ISA and GNU compiler toolchain ##  
 ### <a name="rv-d1sk1---introduction-to-risc-v-basic-keywords"></a> RV-D1SK1 - Introduction to RISC-V basic keywords ###
 **RISC-V** - RISC-V is an open-source instruction set architecture (ISA) that is designed to be simple, modular, and extensible. It stands for "Reduced Instruction Set Computing - Five" and is intended to be used for a wide range of applications, from embedded systems to high-performance computing. Unlike many other ISAs, RISC-V is not owned by any single company or organization, which has contributed to its popularity and adoption.  
@@ -719,6 +720,7 @@ Validity provides:
 
 
 
+## <a name="6--References"></a> 6. References ##
 
-
-
+* https://github.com/RISCV-MYTH-WORKSHOP/RISC-V-CPU-Core-using-TL-Verilog
+* https://github.com/stevehoover/RISC-V_MYTH_Workshop/blob/master/risc-v_shell.tlv
