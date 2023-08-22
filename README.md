@@ -880,15 +880,84 @@ _Read-After-Write Hazard (RAW Hazard):_ A read-after-write hazard occurs when an
 
 In RISC-V, like in many other architectures, the hazard can be mitigated using techniques like forwarding (also known as bypassing) or stalling. Forwarding involves forwarding the data directly from the execution stage of the producing instruction to the operand stage of the consuming instruction. Stalling involves introducing "bubble" stages in the pipeline to allow time for the write operation to complete before the read operation is executed.
 
-**(A)Cycle Valid Instructions**
+**(A)Cycle Valid Instructions**  
+
+	@3
+         //CYCLE VALID INSTRUCTIONS
+         $valid = !(>>1$valid_taken_branch || >>2$valid_taken_branch || 
+                    >>1$valid_load || >>2$valid_load ||  
+                    >>1$valid_jump || >>2$valid_jump) ;
+         
+         $valid_load = $valid && $is_load ;
+         
+         $valid_jump = $is_jump && $valid ;
 
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/5dc8d7d4-b291-4c2e-9ef4-154dbfbf2fd2)
 
 **(B) ALU**
+
+ 	@3   
+         //ARITHMETIC AND LOGIC UNIT (ALU)
+         
+         $sltu_rslt[31:0] = $src1_value < $src2_value ;
+         $sltiu_rslt[31:0]  = $src1_value < $imm ;
+         
+         $result[31:0] = $is_andi ? $src1_value & $imm :
+                         $is_ori ? $src1_value | $imm :
+                         $is_xori ? $src1_value ^ $imm :
+                         ($is_addi || $is_load || $is_s_instr) ? $src1_value + $imm :
+                         $is_slli ? $src1_value << $imm[5:0] :
+                         $is_srli ? $src1_value >> $imm[5:0] :
+                         $is_and ? $src1_value & $src2_value :
+                         $is_or ? $src1_value | $src2_value :
+                         $is_xor ? $src1_value ^ $src2_value :
+                         $is_add ? $src1_value + $src2_value :
+                         $is_sub ? $src1_value - $src2_value :
+                         $is_sll ? $src1_value << $src2_value[4:0] :
+                         $is_srl ? $src1_value >> $src2_value[4:0] :
+                         $is_sltu ? $src1_value | $src2_value :
+                         $is_sltiu ? $src1_value < $imm :
+                         $is_lui ? {$imm[31:12], 12'b0} :
+                         $is_auipc ? $pc + $imm :
+                         $is_jal ? $pc + 4 :
+                         $is_jalr ? $pc + 4 :
+                         $is_srai ? {{32{$src1_value[31]}}, $src1_value} >> $imm[4:0] :
+                         $is_slt ? ($src1_value[31] == $src2_value[31]) ? $sltu_rslt : {31'b0, $src1_value[31]} :
+                         $is_slti ? ($src1_value[31] == $imm[31]) ? $sltiu_rslt : {31'b0, $src1_value[31]} :
+                         $is_sra ? {{32{$src1_value[31]}}, $src1_value} > $src2_value[4:0] :
+                         32'bx ;
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/aaa1e211-d2a6-4a39-867e-6b23a037c5ae)
 
-**(C) Jump Instructions**
-![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/d7605440-1d49-48ac-927e-48d675d11211)
+**(C) Branch Instructions**  
+
+	 	//BRANCH INSTRUCTIONS 1
+         $taken_branch = $is_beq ? ($src1_value == $src2_value):
+                         $is_bne ? ($src1_value != $src2_value):
+                         $is_blt ? (($src1_value < $src2_value) ^ ($src1_value[31] != $src2_value[31])):
+                         $is_bge ? (($src1_value >= $src2_value) ^ ($src1_value[31] != $src2_value[31])):
+                         $is_bltu ? ($src1_value < $src2_value):
+                         $is_bgeu ? ($src1_value >= $src2_value):
+                                    1'b0;
+         
+         $valid_taken_branch = $valid && $taken_branch;
+                  
+      @2
+         //BRANCH INSTRUCTIONS 2
+         $br_target_pc[31:0] = $pc +$imm;
+
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/97a7585c-d2cb-49bb-b27a-32879f03b6f4)
+
+**(D) Register memory**  
+
+	 @4
+         //MINI 1-R/W MEMORY
+         $dmem_wr_en = $is_s_instr && $valid ;
+         $dmem_addr[3:0] = $result[5:2] ;
+         $dmem_wr_data[31:0] = $src2_value ;
+         $dmem_rd_en = $is_load ;
+
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/976b2a40-4526-45eb-95f6-ca82679cac7e)
+
 
 ### <a name="rv-d5sk2---risc-v-cpu-pipelined-core"></a> RV-D5SK2 - RISC-V CPU Pipelined core  ###  
 
