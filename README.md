@@ -882,7 +882,7 @@ In RISC-V, like in many other architectures, the hazard can be mitigated using t
 
 ### <a name="rv-d5sk2---risc-v-cpu-pipelined-core"></a> RV-D5SK2 - RISC-V CPU Pipelined core  ###  
 
-Finally, the RISC-V core was developed on Day_4. Now its time for implementing the pipelining technique for the core, and some additonal instructions. The above architecture is pipelined as follows :
+The RISC-V core was developed on Day_4. Now we implement the pipelining technique for the core, and some additonal instructions. The above architecture is pipelined as follows :
 
 * A 3 cycle RISC V pipelined core, with all the base integer instruction sets was developed.
 * For Load and store a Data memory element was added with neccessary instruction decoding logic.
