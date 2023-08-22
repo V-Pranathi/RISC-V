@@ -19,7 +19,7 @@
   * [RV-D4SK3 - RISC-V control logic](#rv-d4sk3---risc-v-control-logic)
 * [5. RV Day 5 - Complete Pipelined RISC-V CPU micro-architecture](#5--rv-day-5---complete-pipelined-risc-v-cpu-micro-architecture)
   * [RV-D5SK1 - Hazards](#rv-d5sk1---hazards)
-  * [RV-D5SK2 - RISC-V CPU core](#rv-d5sk2---risc-v-cpu-core)
+  * [RV-D5SK2 - RISC-V CPU Pipelined core](#rv-d5sk2---risc-v-cpu-pipelined-core)
 * [7. Contributors](#6--Contributors)
 * [6. References](#6--references)
 ## <a name="1--rv-day-1-introduction-to-risc-v-isa-and-gnu-compiler-toolchain"></a> 1. RV DAY 1 Introduction to RISC-V ISA and GNU compiler toolchain ##  
@@ -880,50 +880,58 @@ _Read-After-Write Hazard (RAW Hazard):_ A read-after-write hazard occurs when an
 
 In RISC-V, like in many other architectures, the hazard can be mitigated using techniques like forwarding (also known as bypassing) or stalling. Forwarding involves forwarding the data directly from the execution stage of the producing instruction to the operand stage of the consuming instruction. Stalling involves introducing "bubble" stages in the pipeline to allow time for the write operation to complete before the read operation is executed.
 
-### <a name="rv-d5sk2---risc-v-cpu-core"></a> RV-D5SK2 - RISC-V CPU core  ###
+### <a name="rv-d5sk2---risc-v-cpu-pipelined-core"></a> RV-D5SK2 - RISC-V CPU Pipelined core  ###  
 
-	\m4_TLV_version 1d: tl-x.org
-	\SV
-  	 //  This code can be found in: https://github.com/stevehoover/RISC-V_MYTH_Workshop
+Finally, the RISC-V core was developed on Day_4. Now its time for implementing the pipelining technique for the core, and some additonal instructions. The above architecture is pipelined as follows :
+
+* A 3 cycle RISC V pipelined core, with all the base integer instruction sets was developed.
+* For Load and store a Data memory element was added with neccessary instruction decoding logic.
+* Register Bypass and Squashing techniques were also incorporated to prevent Read followed by write and branching hazards, arised due to pipelining.
+* Testing of the pipeline design was done in same manner with Load and store incorporated in asm code.
+* Additionally Incorporation of Jump feature (JAL and JALR instructions) was also done.
+
+		\m4_TLV_version 1d: tl-x.org
+		\SV
+  		//  This code can be found in: https://github.com/stevehoover/RISC-V_MYTH_Workshop
    
-  	 m4_include_lib(['https://raw.githubusercontent.com/stevehoover/RISC-V_MYTH_Workshop/c1719d5b338896577b79ee76c2f443ca2a76e14f/tlv_lib/risc-v_shell_lib.tlv'])
+  		 m4_include_lib(['https://raw.githubusercontent.com/stevehoover/RISC-V_MYTH_Workshop/c1719d5b338896577b79ee76c2f443ca2a76e14f/tlv_lib/risc-v_shell_lib.tlv'])
 
-	\SV
+		\SV
 	   m4_makerchip_module   // (Expanded in Nav-TLV pane.)
-	\TLV
+		\TLV
 
-   	// /====================\
-   	// | Sum 1 to 9 Program |
-   	// \====================/
-   	//
-   	// Program for MYTH Workshop to test RV32I
+  		// /====================\
+   		// | Sum 1 to 9 Program |
+   		// \====================/
+   		//
+   		// Program for MYTH Workshop to test RV32I
    		// Add 1,2,3,...,9 (in that order).
 		//
-   	// Regs:
-   	//  r10 (a0): In: 0, Out: final sum
-  	 //  r12 (a2): 10
-   	//  r13 (a3): 1..10
-   	//  r14 (a4): Sum
-  	 // 
-   	// External to function:
-  	 m4_asm(ADD, r10, r0, r0)             // Initialize r10 (a0) to 0.
-   	// Function:
-   	m4_asm(ADD, r14, r10, r0)            // Initialize sum register a4 with 0x0
-   	m4_asm(ADDI, r12, r10, 1010)         // Store count of 10 in register a2.
-   	m4_asm(ADD, r13, r10, r0)            // Initialize intermediate sum register a3 with 0
-   	// Loop:
-  	 m4_asm(ADD, r14, r13, r14)           // Incremental addition
-  	 m4_asm(ADDI, r13, r13, 1)            // Increment intermediate register by 1
-  	 m4_asm(BLT, r13, r12, 1111111111000) // If a3 is less than a2, branch to label named <loop>
-  	 m4_asm(ADD, r10, r14, r0)            // Store final result to register a0 so that it can be read by main program
-  	 m4_asm(SW, r0, r10, 10000)           // Store the final result value to byte address 16
-  	 m4_asm(LW, r17, r0, 10000)           // Load the final result value from adress 16 to x17
+   		// Regs:
+   		//  r10 (a0): In: 0, Out: final sum
+  		 //  r12 (a2): 10
+   		//  r13 (a3): 1..10
+   		//  r14 (a4): Sum
+  		 // 
+   		// External to function:
+  	 	m4_asm(ADD, r10, r0, r0)             // Initialize r10 (a0) to 0.
+   		// Function:
+   		m4_asm(ADD, r14, r10, r0)            // Initialize sum register a4 with 0x0
+   		m4_asm(ADDI, r12, r10, 1010)         // Store count of 10 in register a2.
+   		m4_asm(ADD, r13, r10, r0)            // Initialize intermediate sum register a3 with 0
+   		// Loop:
+  		 m4_asm(ADD, r14, r13, r14)           // Incremental addition
+  		 m4_asm(ADDI, r13, r13, 1)            // Increment intermediate register by 1
+  		 m4_asm(BLT, r13, r12, 1111111111000) // If a3 is less than a2, branch to label named <loop>
+  		 m4_asm(ADD, r10, r14, r0)            // Store final result to register a0 so that it can be read by main program
+  		 m4_asm(SW, r0, r10, 10000)           // Store the final result value to byte address 16
+  		 m4_asm(LW, r17, r0, 10000)           // Load the final result value from adress 16 to x17
    
    		// Optional:
-   	// m4_asm(JAL, r7, 00000000000000000000) // Done. Jump to itself (infinite loop). (Up to 20-bit signed immediate plus implicit 0 bit (unlike JALR) provides byte address; last immediate bit should also be 0)
-  	 m4_define_hier(['M4_IMEM'], M4_NUM_INSTRS)
+ 	 	// m4_asm(JAL, r7, 00000000000000000000) // Done. Jump to itself (infinite loop). (Up to 20-bit signed immediate plus implicit 0 bit (unlike JALR) provides byte address; last immediate bit should also be 0)
+  		 m4_define_hier(['M4_IMEM'], M4_NUM_INSTRS)
    
-  	 |cpu
+  		 |cpu
       @0
          $reset = *reset;
          
@@ -1150,23 +1158,23 @@ In RISC-V, like in many other architectures, the hazard can be mitigated using t
       //       be sure to avoid having unassigned signals (which you might be using for random inputs)
       //       other than those specifically expected in the labs. You'll get strange errors for these.
    
-  	 // Assert these to end simulation (before Makerchip cycle limit).
-   	*passed = *cyc_cnt > 40;
-  	 *failed = 1'b0;
+  		 // Assert these to end simulation (before Makerchip cycle limit).
+   		*passed = *cyc_cnt > 40;
+  		 *failed = 1'b0;
    
-  	 // Macro instantiations for:
-  	 //  o instruction memory
-  	 //  o register file
-   	//  o data memory
-  	 //  o CPU visualization
-  	 |cpu
+  	 	// Macro instantiations for:
+  		 //  o instruction memory
+  		 //  o register file
+   		//  o data memory
+  		 //  o CPU visualization
+  		 |cpu
       m4+imem(@1)    // Args: (read stage)
       m4+rf(@2, @3)  // Args: (read stage, write stage) - if equal, no register bypass is required
       m4+dmem(@4)    // Args: (read/write stage)
    
  	  m4+cpu_viz(@4)    // For visualisation, argument should be at least equal to the last stage of CPU logic
                        // @4 would work for all labs
-	\SV
+		\SV
  	  endmodule
 
 ![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/767a4550-0be0-4b4f-8da0-38d2d6508a04)
