@@ -880,6 +880,16 @@ _Read-After-Write Hazard (RAW Hazard):_ A read-after-write hazard occurs when an
 
 In RISC-V, like in many other architectures, the hazard can be mitigated using techniques like forwarding (also known as bypassing) or stalling. Forwarding involves forwarding the data directly from the execution stage of the producing instruction to the operand stage of the consuming instruction. Stalling involves introducing "bubble" stages in the pipeline to allow time for the write operation to complete before the read operation is executed.
 
+**(A)Cycle Valid Instructions**
+
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/5dc8d7d4-b291-4c2e-9ef4-154dbfbf2fd2)
+
+**(B) ALU**
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/aaa1e211-d2a6-4a39-867e-6b23a037c5ae)
+
+**(C) Jump Instructions**
+![image](https://github.com/V-Pranathi/RISC-V/assets/140998763/d7605440-1d49-48ac-927e-48d675d11211)
+
 ### <a name="rv-d5sk2---risc-v-cpu-pipelined-core"></a> RV-D5SK2 - RISC-V CPU Pipelined core  ###  
 
 The RISC-V core was developed on Day_4. Now we implement the pipelining technique for the core, and some additonal instructions. The above architecture is pipelined as follows :
